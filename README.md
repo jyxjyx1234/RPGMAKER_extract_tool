@@ -1,2 +1,5 @@
 # RPGMAKER_extract_tool
 RPGMAKER引擎json脚本文本提取和导入脚本
+
+适用于用json文件明文储存文本的RPGMAKER游戏。
+提取出的文本可用galtransl等工具进行翻译，然后重新导入。
