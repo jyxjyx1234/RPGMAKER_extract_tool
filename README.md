@@ -1,0 +1,2 @@
+# RPGMAKER_extract_tool
+RPGMAKER引擎json脚本文本提取和导入脚本
