@@ -2,6 +2,7 @@
 #第二步，将内容按照dir写入脚本
 import json
 import os
+import re
 
 yiwenpath='译文.json'
 wenbenpath='提取文本.json'
@@ -28,15 +29,24 @@ wenben=json.load(wenben)
 ]
 转化为{原文:文本}
 '''
+
+
 yw={}
 for dic in yiwen:
     yw[dic["pre_jp"]]=dic["post_zh_preview"]
 
-
+def shaixuan(dic):
+    msg=dic['message']
+    dir=dic['dir']
+    if msg=="Failed translation":
+        return False
+    return True
 
 def xieru(dic):
     dir=dic['dir']
     msg=dic['message']
+    if not shaixuan(dic):
+        return
     dir=dir.split('.')
     res=''
     for i in dir:

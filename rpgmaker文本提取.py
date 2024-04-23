@@ -14,6 +14,18 @@ outfile=open(outpath,'w',encoding='utf8')
 toutpath='待翻译文本.json'
 toutfile=open(toutpath,'w',encoding='utf8')
 textlist=[]#用于去重
+
+
+Filelist = []
+filelist =[]
+for home, dirs, files in os.walk('.\www'):
+    for filename in files:
+        Filelist.append(filename)
+for i in Filelist:
+    i=i.split('.')
+    i=i[0]
+    filelist.append(i)
+
 '''
 输出格式：
 [
@@ -59,13 +71,15 @@ def shaixuan(text):#返回bool值，判断是否是所要的文本
         return False
     if re.match('[a-zA-Z]',text[0]):#首位是字母的一般都是资源文件之类的
         return False
-    if re.search('.\\\n_!$',text):#有这些特殊字符的一般都是资源文件之类的
+    if re.search('[._!$]',text):#有这些特殊字符的一般都是资源文件之类的
         return False
     try:
         int(text)#部分数值以文本形式传递，予以排除
         return False
     except ValueError:
         pass
+    if text in filelist:#去除文件名
+        return False
     return True
 
 def diguijiexi(dir):
@@ -78,16 +92,17 @@ def diguijiexi(dir):
             diguijiexi(dir=dir+'.['+str(i))
     else:
         if shaixuan(content):
-            outdic={}
-            outdic['dir']=dir
-            outdic['message']=content
-            res.append(outdic)
+            if "variables" not in dir:#排除变量名
+                outdic={}
+                outdic['dir']=dir
+                outdic['message']=content
+                res.append(outdic)
 
-            if content not in textlist:
-                toutdic={}
-                toutdic['message']=content
-                tres.append(toutdic)
-                textlist.append(content)
+                if content not in textlist:
+                    toutdic={}
+                    toutdic['message']=content
+                    tres.append(toutdic)
+                    textlist.append(content)
         return
 
 for filename in filenames:
